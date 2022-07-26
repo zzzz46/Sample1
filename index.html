@@ -1,56 +1,46 @@
 <!DOCTYPE html>
-<html lang="ja">
+<canvas id="canvas" width="600" height="600"
+  style="max-width: 100%; height: auto; max-height: 100%">
+このブラウザはHTML5のCanvas要素に対応していないためグラフを表示できません。
+</canvas>
+<script src="https://sekika.github.io/js/graph.js"></script>
+<script>
+'use strict';
 
-<head>
-  <meta charset="utf-8">
-　<title>グラフ</title> 
-</head>
-<body>
-  <h1>折れ線グラフ</h1>
-  <canvas id="myLineChart"></canvas>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+// Initialize canvas
+var c = document.getElementById('canvas');
+var ctx = c.getContext('2d');
+ctx.font = "20px serif"; // Font of the text
+ctx.lineWidth = 1; // Line width
 
-  <script>
-  var ctx = document.getElementById("myLineChart");
-  var myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['8月1日', '8月2日', '8月3日', '8月4日', '8月5日', '8月6日', '8月7日'],
-      datasets: [
-        {
-          label: '最高気温(度）',
-          data: [35, 34, 37, 35, 34, 35, 34, 25],
-          borderColor: "rgba(255,0,0,1)",
-          backgroundColor: "rgba(0,0,0,0)"
-        },
-        {
-          label: '最低気温(度）',
-          data: [25, 27, 27, 25, 26, 27, 25, 21],
-          borderColor: "rgba(0,0,255,1)",
-          backgroundColor: "rgba(0,0,0,0)"
-        }
-      ],
-    },
-    options: {
-      title: {
-        display: true,
-        text: '気温（8月1日~8月7日）'
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            suggestedMax: 40,
-            suggestedMin: 0,
-            stepSize: 10,
-            callback: function(value, index, values){
-              return  value +  '度'
-            }
-          }
-        }]
-      },
-    }
-  });
-  </script>
-</body>
+// Set Cartesian coodinate system for the graph (GC)
+// Origin of GC with respect to canvas coordinate = (ctx.originX, ctx.originY)
+ctx.originX = 300;
+ctx.originY = 500;
+// Unit vector of GC with respect to canvas coordinate = (ctx.unitX, ctx.unitY)
+ctx.unitX = 50;
+ctx.unitY = -50;
 
-</html>
+// Draw graphs
+drawAxis(ctx); // Draw axis and labels
+drawScaleX(ctx); // Draw scale of x axis
+drawScaleY(ctx); // Draw scale of y axis
+ctx.strokeStyle = "blue"; // Color of the curve
+draw(ctx, exp); // Draw y=exp(x) curve
+ctx.fillStyle = "blue"; // Color of legend
+ctx.fillText("y = exp(x)", 420, 80); // Write legend
+ctx.strokeStyle = "green"; // Color of the curve
+draw(ctx, plus, 1); // Draw y=x+1 curve
+ctx.fillStyle = "green"; // Color of legend
+ctx.fillText("y = x+1", 480, 300); // Write legend
+
+// Define mathematical functions
+function plus(x, a) {
+    return x + a;
+}
+
+function exp(x) {
+    return Math.pow(Math.E, x);
+}
+</script>
+<!-- -----

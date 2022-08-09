@@ -57,6 +57,11 @@ def visualization(func_f, x_min, x_max, x_solved):
     plt.plot(exact_x, exact_y, label="$f(x)$", color='#ff0000')  #関数を折線グラフで表示
     plt.scatter(x_solved, 0.0)  #数値解を点グラフで表示
     plt.text(x_solved, 0.5, 'y=x^2.0 - 1.0')
+    plt.text(
+        a,
+        0.0,
+        "a",
+    )
     plt.text(x_solved,
              0.0,
              "$x$ = {:.9f}".format(x_solved),
